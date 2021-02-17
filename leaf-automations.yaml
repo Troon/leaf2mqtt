@@ -1,0 +1,80 @@
+# trigger when house power exceeds 6kW in the early morning (cheap tariff)
+- alias: LEAF refresh on suspected charge start
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.power_meter_house
+      above: 6
+      for:
+        minutes: 2
+  condition:
+    condition: time
+    before: "05:00:00"
+  action:
+    - service: switch.toggle
+      entity_id: switch.leaf_refresh
+    - delay: 60
+    - service: switch.toggle
+      entity_id: switch.leaf_refresh
+
+# Trigger for frequent updates when charging
+- alias: LEAF refresh while charging
+  trigger:
+    # the 'for' is to avoid a race condition between the new values
+    # for last_updated and leaf_charging...
+    - platform: state
+      entity_id: sensor.leaf_last_updated
+      for:
+        seconds: 60
+  condition:
+    condition: state
+    entity_id: binary_sensor.leaf_charging
+    state: 'on'
+  action:
+    - delay: 240
+    - service: switch.toggle
+      entity_id: switch.leaf_refresh
+
+- alias: LEAF refresh on climate start
+  trigger:
+    - platform: state
+      entity_id: switch.leaf_climate_control
+  condition: []
+  action:
+    - service: switch.toggle
+      entity_id: switch.leaf_refresh
+    - delay: 60
+    - service: switch.toggle
+      entity_id: switch.leaf_refresh
+
+# Trigger when climate turned on from Home Assistant
+- alias: LEAF refresh while climate running
+  trigger:
+    - platform: state
+      entity_id: sensor.leaf_last_updated
+  condition:
+    condition: state
+    entity_id: binary_sensor.leaf_hvac_running
+    state: 'on'
+  action:
+    - delay: 300
+    - service: switch.toggle
+      entity_id: switch.leaf_refresh
+
+# Trigger when someone gets home, possibly in the car
+- alias: LEAF refresh on return home
+  trigger:
+    - platform: state
+      entity_id:
+        - person.driver1
+        - person.driver2
+      from: 'not_home'
+      to: 'home'
+      for:
+        minutes: 1
+  condition: []
+  action:
+    - service: switch.toggle
+      entity_id: switch.leaf_refresh
+    - delay: 60
+    - service: switch.toggle
+      entity_id: switch.leaf_refresh
