@@ -1,6 +1,9 @@
 #!/bin/bash
 
 echo "Starting up..."
+echo "Setting timezone..."
+echo $TZ > /etc/timezone
+rm -f /etc/localtime
 cd /root
 
 if [ -z "$MQTTUSER" ]
