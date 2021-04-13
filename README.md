@@ -31,6 +31,6 @@ Please note that I created this for my own personal use and am not looking for f
     1. `MQTTUSER`: (optional) Username for your MQTT broker.
     1. `MQTTPASS`: (optional) Password for your MQTT broker.
 
-If all goes well, you should start to see the messages coming through on MQTT. Request updates over MQTT: see `leaf-switches.yaml`.
+If all goes well, you should start to see the messages coming through on MQTT.
 
-It's up to you how and when you request an update: keep it to a minimum for the sake of your 12V battery. See `leaf-automations.yaml` for some inspiration.
+You request updates over MQTT: see `leaf-switches.yaml`. It's up to you how and when you request an update: keep it to a minimum for the sake of your 12V battery. See `leaf-automations.yaml` for some inspiration.
