@@ -27,6 +27,7 @@ void main(List<String> arguments) {
   var retdict = {};
   var batdict = {};
   var clmdict = {};
+  var locdict = {};
   var sttdict = {};
 
   if (mosuser != null) {
@@ -43,6 +44,7 @@ void main(List<String> arguments) {
 
     vehicle.requestBatteryStatusRefresh();
     vehicle.requestClimateControlStatusRefresh();
+    vehicle.requestLocationRefresh();
     var vin = vehicle.vin;
 
     print('#!/bin/bash');
@@ -79,6 +81,12 @@ void main(List<String> arguments) {
       clmdict['cabintemp'] = climate.cabinTemperature;
       clmdict['hvacrunning'] = climate.isRunning;
       clmdict.forEach((k, v) => print('mosquitto_pub ${mosopt} -t "${topic}/${vin}/${k}" -m "${v}"'));
+    });
+
+    vehicle.requestLocation().then((location) {
+      locdict['latitude'] = location.latitude;
+      locdict['longitude'] = location.longitude;
+      locdict.forEach((k, v) => print('mosquitto_pub ${mosopt} -t "${topic}/${vin}/${k}" -m "${v}"'));
     });
 
     retdict['nickname'] = vehicle.nickname;
