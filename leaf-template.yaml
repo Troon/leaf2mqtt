@@ -1,0 +1,32 @@
+- sensor:
+    - name: leaf_position
+      state: "Position"
+      attributes:
+        latitude: "{{ states('sensor.leaf_latitude') }}"
+        longitude: "{{ states('sensor.leaf_longitude') }}"
+
+- sensor:
+    - name: leaf_charge_time_6kw_secs
+      unit_of_measurement: "s"
+      state: >-
+        {% set vl = states('sensor.leaf_charge_time_6kw').split(":") %}
+        {{ vl[0]|int*3600 + vl[1]|int*60 }}
+
+- sensor:
+    - name: leaf_charge_time_6kw_secs_90
+      unit_of_measurement: "s"
+      # charge rate is about 1% every 226s
+      state: "{{ [0, (90 - states('sensor.leaf_battery_percentage')|int) * 226]|max }}"
+
+- sensor:
+    - name: leaf_charge_time_6kw_90
+      state: "{{ (timedelta(0, states('sensor.leaf_charge_time_6kw_secs_90')|int)|string)[:-3] }}"
+
+- sensor:
+    - name: leaf_charge_time_6kw_secs_80
+       unit_of_measurement: "s"
+      state: "{{ [0, (80 - states('sensor.leaf_battery_percentage')|int) * 226]|max }}"
+
+- sensor:
+    - name: leaf_charge_time_6kw_80
+      state: "{{ (timedelta(0, states('sensor.leaf_charge_time_6kw_secs_80')|int)|string)[:-3] }}"
