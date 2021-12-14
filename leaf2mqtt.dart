@@ -92,7 +92,7 @@ void main(List<String> arguments) {
     retdict['nickname'] = vehicle.nickname;
     retdict['modelname'] = vehicle.modelName;
     retdict['vin'] = vehicle.vin;
-    retdict['updated'] = DateTime.now().toIso8601String();
+    retdict['updated'] = DateTime.now().toUtc().toIso8601String();
     
     retdict.forEach((k, v) => print('mosquitto_pub ${mosopt} -t "${topic}/${vin}/${k}" -m "${v}"'));
 
