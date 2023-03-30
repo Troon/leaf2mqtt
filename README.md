@@ -2,7 +2,7 @@
 
 **Use this at your own risk. No liability is accepted for any negative consequences.** 
 
-(You probably want to use [this fork](https://github.com/yp87/leaf2mqtt) which has a native Dart MQTT client)
+You probably want to use [this fork](https://github.com/yp87/leaf2mqtt) which has a native Dart MQTT client. I'm no longer maintaining this one as I don't have the LEAF any more.
 
 Builds a Docker container to pull in data from the Nissan Connect platform for the LEAF and publish over MQTT, using Tobias Westergaard Kjeldsen's excellent `dartnissanconnect` library which is also the basis for the MyLeaf app. Climate on/off control is available, but beware that it is slow and unreliable.
 
